@@ -184,19 +184,68 @@ export default function LavoriPage() {
           <h1 className="text-2xl font-bold text-white mb-1">Gestione Lavori</h1>
           <p className="text-xs text-gray-500">{filteredBookings.length} lavori in elenco</p>
         </div>
-        <div className="relative w-full md:w-64">
-          <input 
-            type="text" 
-            placeholder="Cerca nome, telefono, targa..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-gray-950/50 border border-white/10 text-white text-sm rounded-xl px-4 py-2 pl-10 focus:outline-none focus:border-primary-500/50 transition-colors"
-          />
-          <svg className="w-4 h-4 text-gray-500 absolute left-3.5 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={handleAddManualBooking}
+            className="btn-primary text-xs py-2 px-4 shadow-lg shadow-primary-900/20"
+          >
+            + Nuovo Lavoro
+          </button>
+          <div className="relative w-48 md:w-64">
+            <input 
+              type="text" 
+              placeholder="Cerca..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-gray-950/50 border border-white/10 text-white text-sm rounded-xl px-4 py-2 pl-10 focus:outline-none focus:border-primary-500/50 transition-colors"
+            />
+            <svg className="w-4 h-4 text-gray-500 absolute left-3.5 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
         </div>
       </div>
+
+      {/* Form per nuovo inserimento manuale (SPOSTATO FUORI DALLA LISTA) */}
+      {editingId === 'new_manual' && (
+        <div className="glass border-primary-500/30 p-4 ring-2 ring-primary-500/20 shadow-[0_0_20px_rgba(251,146,60,0.1)] animate-slide-down mb-6">
+          <h3 className="text-sm font-bold text-primary-400 uppercase tracking-widest mb-4">Nuova Scheda Cliente Offline</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <input placeholder="Nome *" className="input-glass text-xs py-2" value={manualData.nome} onChange={(e) => setManualData({...manualData, nome: e.target.value})} />
+              <input placeholder="Cognome" className="input-glass text-xs py-2" value={manualData.cognome} onChange={(e) => setManualData({...manualData, cognome: e.target.value})} />
+              <input placeholder="Telefono" className="input-glass text-xs py-2" value={manualData.telefono} onChange={(e) => setManualData({...manualData, telefono: e.target.value})} />
+              <input placeholder="Targa *" className="input-glass text-xs py-2" value={manualData.targa} onChange={(e) => setManualData({...manualData, targa: e.target.value.toUpperCase()})} />
+              <input placeholder="Marca" className="input-glass text-xs py-2" value={manualData.marca} onChange={(e) => setManualData({...manualData, marca: e.target.value})} />
+              <input placeholder="Modello" className="input-glass text-xs py-2" value={manualData.modello} onChange={(e) => setManualData({...manualData, modello: e.target.value})} />
+          </div>
+          
+          <div className="border-t border-white/[0.04] pt-4 space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="label-glass text-[10px]">Data</label>
+                  <input type="date" min={todayStr} value={appDate} onChange={(e) => setAppDate(e.target.value)} className="input-glass text-xs py-1.5"/>
+                </div>
+                <div>
+                  <label className="label-glass text-[10px]">Ora</label>
+                  <select value={appTime} onChange={(e) => setAppTime(e.target.value)} className="select-glass text-xs py-1.5 min-h-0">
+                    {['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30',
+                      '14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00'].map((t) => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="label-glass text-[10px]">Note Meccanico</label>
+                <textarea value={editData.note_meccanico} onChange={(e) => setEditData({...editData, note_meccanico: e.target.value})} placeholder="Dettagli lavoro..." rows={2} className="input-glass text-xs resize-none p-2"/>
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button onClick={() => saveEdit('new')} disabled={saving} className="btn-primary text-xs py-2 flex-1">{saving ? 'Creazione...' : 'Crea Scheda'}</button>
+                <button onClick={() => { setEditingId(null); setAddingNew(false); }} className="btn-ghost text-xs py-2 px-4 text-gray-400">Annulla</button>
+              </div>
+          </div>
+        </div>
+      )}
 
       {/* Calendario Mensile */}
       {!searchQuery && (
@@ -258,46 +307,6 @@ export default function LavoriPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {/* Form per nuovo inserimento manuale */}
-          {editingId === 'new_manual' && (
-            <div className="glass border-primary-500/30 p-4 ring-2 ring-primary-500/20 shadow-[0_0_20px_rgba(251,146,60,0.1)] animate-slide-down">
-              <h3 className="text-sm font-bold text-primary-400 uppercase tracking-widest mb-4">Nuova Scheda Cliente Offline</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                  <input placeholder="Nome *" className="input-glass text-xs py-2" value={manualData.nome} onChange={(e) => setManualData({...manualData, nome: e.target.value})} />
-                  <input placeholder="Cognome" className="input-glass text-xs py-2" value={manualData.cognome} onChange={(e) => setManualData({...manualData, cognome: e.target.value})} />
-                  <input placeholder="Telefono" className="input-glass text-xs py-2" value={manualData.telefono} onChange={(e) => setManualData({...manualData, telefono: e.target.value})} />
-                  <input placeholder="Targa *" className="input-glass text-xs py-2" value={manualData.targa} onChange={(e) => setManualData({...manualData, targa: e.target.value.toUpperCase()})} />
-                  <input placeholder="Marca" className="input-glass text-xs py-2" value={manualData.marca} onChange={(e) => setManualData({...manualData, marca: e.target.value})} />
-                  <input placeholder="Modello" className="input-glass text-xs py-2" value={manualData.modello} onChange={(e) => setManualData({...manualData, modello: e.target.value})} />
-              </div>
-              
-              <div className="border-t border-white/[0.04] pt-4 space-y-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="label-glass text-[10px]">Data</label>
-                      <input type="date" min={todayStr} value={appDate} onChange={(e) => setAppDate(e.target.value)} className="input-glass text-xs py-1.5"/>
-                    </div>
-                    <div>
-                      <label className="label-glass text-[10px]">Ora</label>
-                      <select value={appTime} onChange={(e) => setAppTime(e.target.value)} className="select-glass text-xs py-1.5 min-h-0">
-                        {['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30',
-                          '14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00'].map((t) => (
-                          <option key={t} value={t}>{t}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="label-glass text-[10px]">Note Meccanico</label>
-                    <textarea value={editData.note_meccanico} onChange={(e) => setEditData({...editData, note_meccanico: e.target.value})} placeholder="Dettagli lavoro..." rows={2} className="input-glass text-xs resize-none p-2"/>
-                  </div>
-                  <div className="flex gap-2 pt-2">
-                    <button onClick={() => saveEdit('new')} disabled={saving} className="btn-primary text-xs py-2 flex-1">{saving ? 'Creazione...' : 'Crea Scheda'}</button>
-                    <button onClick={() => { setEditingId(null); setAddingNew(false); }} className="btn-ghost text-xs py-2 px-4 text-gray-400">Annulla</button>
-                  </div>
-              </div>
-            </div>
-          )}
 
           {filteredBookings.map((b) => (
             <div id={`booking-${b.id}`} key={b.id} className={`glass border-white/[0.04] p-4 transition-all duration-500 ${editingId === b.id ? 'ring-2 ring-primary-500/50 shadow-[0_0_20px_rgba(251,146,60,0.1)]' : ''}`}>

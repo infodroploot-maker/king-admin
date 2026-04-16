@@ -58,8 +58,8 @@ export default async function AdminDashboard() {
         <p className="text-xs font-medium text-primary-400 uppercase tracking-wider mb-1">
           {DAY_NAMES_SHORT[(now.getDay() + 6) % 7]}, {now.getDate()} {MONTH_NAMES[now.getMonth()]} {now.getFullYear()}
         </p>
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-[10px] text-gray-400 font-medium opacity-50 -mt-1 ml-0.5">Versione 1.01.00</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">Dashboard</h1>
+        <p className="text-xs text-gray-400 font-semibold tracking-wide opacity-60 mt-2 mb-6">Versione 1.01.00</p>
       </div>
 
       {/* Stat Cards */}
