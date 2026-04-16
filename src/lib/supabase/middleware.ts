@@ -1,4 +1,6 @@
+// FORCE_DEPLOY_VERIFICATION_V2
 import { createServerClient } from '@supabase/ssr' // Vercel Fix
+
 
 import { NextResponse, type NextRequest } from 'next/server'
 export async function updateSession(request: NextRequest) {
