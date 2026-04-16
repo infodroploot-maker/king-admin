@@ -28,6 +28,7 @@ export default async function AdminShell({ children }: { children: React.ReactNo
               className="w-40 h-40 object-contain drop-shadow-[0_0_15px_rgba(251,146,60,0.3)] mb-2"
             />
             <p className="text-[10px] text-gray-500 font-medium">Pannello Gestione</p>
+            <p className="text-[9px] text-gray-600 font-medium opacity-50">Versione 1.01.00</p>
           </div>
         </div>
 
