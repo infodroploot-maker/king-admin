@@ -60,15 +60,16 @@ export default async function AdminShell({ children }: { children: React.ReactNo
 
       {/* Mobile Header */}
       <header className="md:hidden fixed top-0 w-full z-40 glass border-0 border-b border-white/[0.06] rounded-none h-20 flex items-center justify-between px-4">
-        <div className="flex items-center">
-          <Image 
-            src="/logo.png" 
-            alt="Autofficina King" 
-            width={144} 
-            height={144} 
-            className="w-20 h-20 object-contain drop-shadow-[0_0_10px_rgba(251,146,60,0.3)]"
-          />
-        </div>
+          <div className="flex flex-col">
+            <Image 
+              src="/logo.png" 
+              alt="Autofficina King" 
+              width={144} 
+              height={144} 
+              className="w-16 h-16 object-contain drop-shadow-[0_0_10px_rgba(251,146,60,0.3)]"
+            />
+            <p className="text-[8px] text-gray-600 font-medium opacity-50 -mt-2">v1.01.00</p>
+          </div>
         <Link href="/richieste" className="relative">
           <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           {newCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">{newCount}</span>}
