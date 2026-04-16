@@ -59,6 +59,7 @@ export default async function AdminDashboard() {
           {DAY_NAMES_SHORT[(now.getDay() + 6) % 7]}, {now.getDate()} {MONTH_NAMES[now.getMonth()]} {now.getFullYear()}
         </p>
         <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-[10px] text-gray-400 font-medium opacity-50 -mt-1 ml-0.5">Versione 1.01.00</p>
       </div>
 
       {/* Stat Cards */}

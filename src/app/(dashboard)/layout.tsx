@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { signOutAction } from '@/lib/actions/auth'
 
 export default async function AdminShell({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -28,7 +29,6 @@ export default async function AdminShell({ children }: { children: React.ReactNo
               className="w-40 h-40 object-contain drop-shadow-[0_0_15px_rgba(251,146,60,0.3)] mb-2"
             />
             <p className="text-[10px] text-gray-500 font-medium">Pannello Gestione</p>
-            <p className="text-[9px] text-gray-600 font-medium opacity-50">Versione 1.01.00</p>
           </div>
         </div>
 
@@ -54,7 +54,7 @@ export default async function AdminShell({ children }: { children: React.ReactNo
 
         <div className="p-4 border-t border-white/[0.06]">
           <p className="text-xs text-gray-600 mb-2 truncate">{user.email}</p>
-          <form action="/signout" method="post"><button className="text-xs text-gray-500 hover:text-red-400 transition">Disconnetti</button></form>
+          <form action={signOutAction}><button className="text-xs text-gray-500 hover:text-red-400 transition">Disconnetti</button></form>
         </div>
       </aside>
 
@@ -68,7 +68,6 @@ export default async function AdminShell({ children }: { children: React.ReactNo
               height={144} 
               className="w-16 h-16 object-contain drop-shadow-[0_0_10px_rgba(251,146,60,0.3)]"
             />
-            <p className="text-[8px] text-gray-600 font-medium opacity-50 -mt-2">v1.01.00</p>
           </div>
         <Link href="/richieste" className="relative">
           <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
