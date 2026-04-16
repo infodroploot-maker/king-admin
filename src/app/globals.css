@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { @apply bg-gray-950 text-white font-sans; }
+  ::selection { @apply bg-primary-500/30 text-white; }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
+
+@layer components {
+  .glass { @apply bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] rounded-2xl; }
+  .glass-strong { @apply bg-white/[0.12] backdrop-blur-2xl border border-white/[0.15] rounded-2xl; }
+
+  .btn-primary { @apply bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-primary-500/20 transition-all duration-300 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto; }
+  .btn-ghost { @apply bg-white/[0.06] hover:bg-white/[0.12] text-white font-medium px-6 py-3 rounded-xl border border-white/[0.08] transition-all duration-300 active:scale-[0.97] w-full md:w-auto; }
+
+  .input-glass { @apply w-full rounded-xl border border-white/[0.12] bg-white/[0.06] backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-gray-600 outline-none transition-all duration-300 focus:border-primary-500/50 focus:bg-white/[0.1] focus:ring-2 focus:ring-primary-500/20; }
+  .select-glass { @apply w-full rounded-xl border border-white/[0.12] bg-white/[0.06] backdrop-blur-sm px-4 py-3 text-sm text-white outline-none appearance-none cursor-pointer transition-all duration-300 focus:border-primary-500/50 focus:ring-2 focus:ring-primary-500/20; }
+  .select-glass option { @apply bg-gray-900 text-white; }
+  .label-glass { @apply block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider; }
+
+  /* kept for login page */
+  .card { @apply glass-strong p-6; }
+  .input-field { @apply input-glass; }
+  .select-field { @apply select-glass; }
+  .label { @apply label-glass; }
+}
+
+@layer utilities {
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+  .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+}
