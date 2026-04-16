@@ -1,4 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr' // Vercel Fix
+
 import { NextResponse, type NextRequest } from 'next/server'
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
