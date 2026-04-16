@@ -12,12 +12,23 @@ export async function POST() {
 
     const { data: consegnati } = await supabaseAdmin.from('bookings').select('preventivo_euro').eq('status', 'consegnato')
     const now = new Date(); const mese = now.getMonth() + 1; const anno = now.getFullYear()
-    const totale = (consegnati || []).reduce((sum, b) => sum + (b.preventivo_euro || 0), 0)
-    const numLavori = (consegnati || []).length
+    const totaleNuovo = (consegnati || []).reduce((sum, b) => sum + (b.preventivo_euro || 0), 0)
+    const numLavoriNuovi = (consegnati || []).length
 
-    await supabaseAdmin.from('monthly_snapshots').upsert({ mese, anno, totale_euro: totale, num_lavori: numLavori }, { onConflict: 'mese,anno' })
+    // Recupera record esistente per sommare i valori
+    const { data: existing } = await supabaseAdmin.from('monthly_snapshots').select('*').eq('mese', mese).eq('anno', anno).single()
+    const totaleFinale = (existing?.totale_euro || 0) + totaleNuovo
+    const numLavoriFinale = (existing?.num_lavori || 0) + numLavoriNuovi
+
+    await supabaseAdmin.from('monthly_snapshots').upsert({ 
+      mese, 
+      anno, 
+      totale_euro: totaleFinale, 
+      num_lavori: numLavoriFinale 
+    }, { onConflict: 'mese,anno' })
+    
     await supabaseAdmin.from('bookings').delete().eq('status', 'consegnato')
 
-    return NextResponse.json({ success: true, data: { mese, anno, totale_euro: totale, num_lavori: numLavori } })
+    return NextResponse.json({ success: true, data: { mese, anno, totale_euro: totaleFinale, num_lavori: numLavoriFinale } })
   } catch { return NextResponse.json({ success: false, error: 'Errore interno' }, { status: 500 }) }
 }
